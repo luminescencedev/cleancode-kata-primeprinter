@@ -26,7 +26,7 @@ public class PrimePrinterTest {
 
     @Test
     void makeSureOutputMatchesGold() throws Exception {
-        PrimePrinter.main(new String[0]);
+        PrimePrinterHelper.main(new String[0]);
         BufferedReader lead = null;
         BufferedReader gold = null;
 		try {
