@@ -1,42 +1,50 @@
 function buildUrl(url, options) {
-    let builtUrl = initializeUrl(url);
-
-    if (options) {
-        builtUrl = appendPath(builtUrl, options.path);
-        builtUrl = appendQueryParams(builtUrl, options.queryParams);
-        builtUrl = appendHash(builtUrl, options.hash);
-    }
-
+    builtUrl = initializeUrl(url);
+    builtUrl = addPath(options);
+    builtUrl = addQueryParams(options);
+    builtUrl = addHash(options);
     return builtUrl;
 }
 
 function initializeUrl(url) {
-    if (url === null || typeof(url) === 'object') {
-      return '';
+    if (url === null) {
+        builtUrl = '';
+    } 
+    else if (typeof(url) === 'object') {
+        builtUrl = '';
+        options = url;
+    } 
+    else {
+        builtUrl = url;
     }
-    return url;
+    return builtUrl;
 }
 
-function appendPath(url, path) {
-    if (path) {
-      return url + '/' + path;
+function addPath(options) {
+    if (options.path) {
+        builtUrl += '/' + options.path;
     }
-    return url;
+    return builtUrl;
 }
 
-function appendQueryParams(url, queryParams) {
-    if (queryParams) {
-        const queryString = Object.keys(queryParams)
-            .map(key => `${key}=${queryParams[key]}`)
-            .join('&');
-        return url + '?' + queryString;
+function addQueryParams(options) {
+    var queryString = [];
+    var key;
+
+    if (options.queryParams) {
+        for (key in options.queryParams) {
+            if (options.queryParams.hasOwnProperty(key)) {
+                queryString.push(key + '=' + options.queryParams[key]);
+            }
+        }
+        builtUrl += '?' + queryString.join('&');
     }
-    return url;
+    return builtUrl;
 }
 
-function appendHash(url, hash) {
-    if (hash) {
-        return url + '#' + hash;
+function addHash(options) {
+    if (options.hash) {
+        builtUrl += '#' + options.hash;
     }
-    return url;
+    return builtUrl;
 }
