@@ -13,6 +13,6 @@ public class Exercise1 {
     }
 
     public boolean isEdible() {
-        return this.expirationDate.isAfter(LocalDate.now()) && Boolean.TRUE.equals(this.approvedForConsumption) && this.inspectorId != null;
+        return this.expirationDate.isAfter(LocalDate.now()) && this.approvedForConsumption && this.inspectorId != null;
     }
 }
