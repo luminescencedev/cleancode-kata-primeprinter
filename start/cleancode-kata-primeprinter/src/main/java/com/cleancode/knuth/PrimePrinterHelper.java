@@ -7,10 +7,6 @@ public class PrimePrinterHelper {
     private final int maxOrder; // Maximum order for prime generation
 
     private int[] primes; // Array to hold prime numbers
-    private int pageNumber; // Page number for printing
-    private int pageOffset; // Page offset for printing
-    private int rowOffset; // Row offset for printing
-    private int column; // Column index for printing
     private int candidate; // Candidate for the next prime
     private int primeIndex; // Index for the current prime
     private boolean isPrime; // Flag indicating if candidate is prime
@@ -60,29 +56,6 @@ public class PrimePrinterHelper {
         return primes;
     }
 
-    public void printNumbers(int[] numbers, int numberOfNumbers) {
-        pageNumber = 1;
-        pageOffset = 1;
-        while (pageOffset <= numberOfNumbers) {
-            System.out.print("The First ");
-            System.out.print(Integer.toString(numberOfNumbers));
-            System.out.print(" Prime Numbers === Page ");
-            System.out.print(Integer.toString(pageNumber));
-            System.out.println("\n");
-
-            for (rowOffset = pageOffset; rowOffset <= pageOffset + linesPerPage - 1; rowOffset++) {
-                for (column = 0; column <= columns - 1; column++) {
-                    if (rowOffset + column * linesPerPage <= numberOfNumbers)
-                        System.out.printf("%10d", numbers[rowOffset + column * linesPerPage]);
-                }
-                System.out.println();
-            }
-            System.out.println("\f");
-            pageNumber++;
-            pageOffset += linesPerPage * columns;
-        }
-    }
-
     public static void main(String[] args) {
         final int numberOfNumbers = 1000;
         final int linesPerPage = 50;
@@ -91,6 +64,43 @@ public class PrimePrinterHelper {
 
         PrimePrinterHelper helper = new PrimePrinterHelper(numberOfNumbers, linesPerPage, columns, maxOrder);
         int[] primes = helper.generatePrimes();
-        helper.printNumbers(primes, numberOfNumbers);
+
+        // Create NumberPrinter and pass the required arguments to print primes
+        NumberPrinter printer = new NumberPrinter(linesPerPage, columns);
+        printer.printNumbers(primes, numberOfNumbers);
+    }
+
+    // NumberPrinter class moved to the top level and is now independent
+    public static class NumberPrinter {
+        private final int linesPerPage; // Number of rows per page
+        private final int columns; // Number of columns per row
+
+        public NumberPrinter(int linesPerPage, int columns) {
+            this.linesPerPage = linesPerPage;
+            this.columns = columns;
+        }
+
+        public void printNumbers(int[] numbers, int numberOfNumbers) {
+            int pageNumber = 1;
+            int pageOffset = 1;
+            while (pageOffset <= numberOfNumbers) {
+                System.out.print("The First ");
+                System.out.print(Integer.toString(numberOfNumbers));
+                System.out.print(" Prime Numbers === Page ");
+                System.out.print(Integer.toString(pageNumber));
+                System.out.println("\n");
+
+                for (int rowOffset = pageOffset; rowOffset <= pageOffset + linesPerPage - 1; rowOffset++) {
+                    for (int column = 0; column <= columns - 1; column++) {
+                        if (rowOffset + column * linesPerPage <= numberOfNumbers)
+                            System.out.printf("%10d", numbers[rowOffset + column * linesPerPage]);
+                    }
+                    System.out.println();
+                }
+                System.out.println("\f");
+                pageNumber++;
+                pageOffset += linesPerPage * columns;
+            }
+        }
     }
 }
