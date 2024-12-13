@@ -12,9 +12,6 @@ public class Exercise3 {
         double disc = (years > 5) ? (double) 5 / 100 : (double)years / 100;
 
         switch (type) {
-            case 1:
-                result = amount;
-                break;
             case 2:
                 result = (amount - (0.1 * amount)) - disc * (amount - (0.1 * amount));
                 break;
